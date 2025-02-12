@@ -7,18 +7,16 @@ namespace io_simulation_wpf.ViewModels
 {
     public class DebugViewModel
     {
-        private DebugModel _model;
+        public DebugModel Model { get; }
 
         public DebugViewModel()
         {
-            _model = new DebugModel();
+            Model = new DebugModel();
         }
-
-        public ObservableCollection<string> Messages => _model.Messages;
 
         public void AddDebugMessage(string msg)
         {
-            _model.Messages.Add(msg);
+            Model.Messages.Add(msg);
         }
     }
 }

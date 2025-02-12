@@ -20,11 +20,6 @@ namespace io_simulation_wpf.ViewModels
             // 1) Serial-Port-Service anlegen
             _serialPortService = new SerialPortService("COM4", 9600);
 
-            // 2) Model-Instanzen anlegen
-            var ioModel = new IOModel();
-            //var debugModel = new Models.DebugModel();
-            //var logModel = new Models.LogModel();
-
             // 3) Sub-ViewModels anlegen & referenzieren
             IOVM = new IOViewModel(_serialPortService);
             DebugVM = new DebugViewModel();
@@ -43,11 +38,10 @@ namespace io_simulation_wpf.ViewModels
         {
             // Grobe Beispiel-Logik: 
             // Unterscheide, ob "IO=...", "DEBUG=...", "LOG=..."
-            if (line.StartsWith("IO="))
+            if (line.StartsWith("d"))
             {
-                // => IO-spezifische Daten
-                //   Wir rufen die ParseIOData-Methode im IOViewModel auf:
-                IOVM.ParseData(line.Substring(3));
+                IOVM.ProcessData(line.Substring(0, 2), line.Substring(2));
+                DebugVM?.AddDebugMessage("Recv: " + line);
             }
             else if (line.StartsWith("DEBUG="))
             {
@@ -57,13 +51,10 @@ namespace io_simulation_wpf.ViewModels
             }
             else if (line.StartsWith("LOG="))
             {
-                // => Log-Meldung
-                var msg = line.Substring(4);
-                LogVM?.AddLogMessage(msg);
+                LogVM?.AddLogMessage(line);
             }
             else
             {
-                // Unbekannt -> pack's ins Debug oder Log, wie du magst
                 DebugVM?.AddDebugMessage("Unknown line: " + line);
             }
         }

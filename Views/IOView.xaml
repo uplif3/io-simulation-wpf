@@ -37,6 +37,26 @@
                       Command="{Binding ToggleSwitchCommand}"
                       CommandParameter="3"
                       Margin="5"/>
+            <CheckBox Content="Switch4"
+                      IsChecked="{Binding Model.Switch4}"
+                      Command="{Binding ToggleSwitchCommand}"
+                      CommandParameter="4"
+                      Margin="5"/>
+            <CheckBox Content="Switch5"
+                      IsChecked="{Binding Model.Switch5}"
+                      Command="{Binding ToggleSwitchCommand}"
+                      CommandParameter="5"
+                      Margin="5"/>
+            <CheckBox Content="Switch6"
+                      IsChecked="{Binding Model.Switch6}"
+                      Command="{Binding ToggleSwitchCommand}"
+                      CommandParameter="6"
+                      Margin="5"/>
+            <CheckBox Content="Switch7"
+                      IsChecked="{Binding Model.Switch7}"
+                      Command="{Binding ToggleSwitchCommand}"
+                      CommandParameter="7"
+                      Margin="5"/>
         </WrapPanel>
 
         <TextBlock Text="Buttons:" FontWeight="Bold" />

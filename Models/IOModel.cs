@@ -268,7 +268,9 @@ namespace io_simulation_wpf.Models
             Led4 = (val & (1 << 4)) != 0;
             Led5 = (val & (1 << 5)) != 0;
             Led6 = (val & (1 << 6)) != 0;
-            Led7 = (val & (1 << 7)) != 0;
+            Led7 = (val & (1 << 7)) != 0; 
+            // Debug-Ausgabe
+            System.Diagnostics.Debug.WriteLine($"SetLedStateFromHex: {hexVal} -> {Convert.ToString(val, 2).PadLeft(8, '0')}");
         }
 
         public void SetSwitchStateFromHex(string hexVal)

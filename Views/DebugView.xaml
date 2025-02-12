@@ -6,6 +6,6 @@
       xmlns:local="clr-namespace:io_simulation_wpf.Views">
 
     <Grid>
-        <ListBox ItemsSource="{Binding Messages}" />
+        <ListBox ItemsSource="{Binding Model.Messages}" />
     </Grid>
 </UserControl>

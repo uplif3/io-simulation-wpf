@@ -22,6 +22,14 @@ namespace io_simulation_wpf.Views
         public IOView()
         {
             InitializeComponent();
+
+            this.Loaded += (s, e) =>
+            {
+                if (this.DataContext == null)
+                    System.Diagnostics.Debug.WriteLine("IOView DataContext is NULL!");
+                else
+                    System.Diagnostics.Debug.WriteLine($"IOView DataContext: {this.DataContext.GetType().Name}");
+            };
         }
     }
 }

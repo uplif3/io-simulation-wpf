@@ -11,11 +11,12 @@ namespace io_simulation_wpf.ViewModels
 {
     public class IOViewModel
     {
-        private IOModel model = new IOModel();
+        public IOModel Model { get; }
         private SerialPortService port;
 
         public IOViewModel(SerialPortService port)
         {
+            this.Model = new IOModel();
             this.port = port;
 
             ToggleSwitchCommand = new RelayCommand(idx => ToggleSwitch(int.Parse(idx.ToString())));
@@ -28,17 +29,17 @@ namespace io_simulation_wpf.ViewModels
         {
             switch(idx)
             {
-                case 0: model.Switch0 = !model.Switch0; break;
-                case 1: model.Switch1 = !model.Switch1; break;
-                case 2: model.Switch2 = !model.Switch2; break;
-                case 3: model.Switch3 = !model.Switch3; break;
-                case 4: model.Switch4 = !model.Switch4; break;
-                case 5: model.Switch5 = !model.Switch5; break;
-                case 6: model.Switch6 = !model.Switch6; break;
-                case 7: model.Switch7 = !model.Switch7; break;
+                case 0: Model.Switch0 = !Model.Switch0; break;
+                case 1: Model.Switch1 = !Model.Switch1; break;
+                case 2: Model.Switch2 = !Model.Switch2; break;
+                case 3: Model.Switch3 = !Model.Switch3; break;
+                case 4: Model.Switch4 = !Model.Switch4; break;
+                case 5: Model.Switch5 = !Model.Switch5; break;
+                case 6: Model.Switch6 = !Model.Switch6; break;
+                case 7: Model.Switch7 = !Model.Switch7; break;
             }
 
-            string hexVal = model.GetSwitchStateInHex();
+            string hexVal = Model.GetSwitchStateInHex();
             port.WriteLine($"d1{hexVal}");
         }
 
@@ -47,30 +48,30 @@ namespace io_simulation_wpf.ViewModels
         {
             switch (idx)
             {
-                case 0: model.Button0 = !model.Button0; break;
-                case 1: model.Button1 = !model.Button1; break;
-                case 2: model.Button2 = !model.Button2; break;
-                case 3: model.Button3 = !model.Button3; break;
+                case 0: Model.Button0 = !Model.Button0; break;
+                case 1: Model.Button1 = !Model.Button1; break;
+                case 2: Model.Button2 = !Model.Button2; break;
+                case 3: Model.Button3 = !Model.Button3; break;
             }
-            string hexVal = model.GetButtonStateInHex();
+            string hexVal = Model.GetButtonStateInHex();
             port.WriteLine($"d3{hexVal}");
         }
 
-        public void ParseData(string data)
+        public void ProcessData(string cmd, string data)
         {
             Console.WriteLine($"recieved: {data}");
 
             if (data.StartsWith("d1"))
             {
-                model.SetSwitchStateFromHex(data.Substring(2));
+                Model.SetSwitchStateFromHex(data.Substring(2));
             }
             else if (data.StartsWith("d3"))
             {
-                model.SetButtonStateFromHex(data.Substring(2));
+                Model.SetButtonStateFromHex(data.Substring(2));
             }
-            else if (data.StartsWith("d0"))
+            else if (cmd is "d0")
             {
-                model.SetLedStateFromHex(data.Substring(2));
+                Model.SetLedStateFromHex(data);
             }
         }
     }
