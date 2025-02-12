@@ -10,11 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.IO.Ports" Version="9.0.2" />
+    <Compile Update="Views\AlarmclockView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

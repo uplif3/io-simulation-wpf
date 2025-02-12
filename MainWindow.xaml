@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:io_simulation_wpf"
         xmlns:views="clr-namespace:io_simulation_wpf.Views"
+        xmlns:converters="clr-namespace:io_simulation_wpf.Converters"
         xmlns:vm="clr-namespace:io_simulation_wpf.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900">
+
+    <Window.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -18,8 +23,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <views:IOView DataContext="{Binding IOVM}" Grid.Row="1" x:Name="IOPanel"/>
+        <views:IOView DataContext="{Binding IOVM}" 
+              Grid.Row="{Binding DataContext.IOViewRow, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+              x:Name="IOPanel"/>
         <views:LogView DataContext="{Binding LogVM}" Grid.Row="0" Grid.Column="1" MinHeight="180" MaxHeight="180" MinWidth="200" x:Name="LogPanel"/>
         <views:DebugView DataContext="{Binding DebugVM}" Grid.Row="1" Grid.Column="1" MinHeight="180" MaxHeight="180" MinWidth="200" x:Name="DebugPanel"/>
+        <ContentControl Content="{Binding ActiveSpecialView}" 
+                Grid.Row="0" Grid.Column="0" 
+                Visibility="{Binding ActiveSpecialView, Converter={StaticResource NullToVisibilityConverter}}"/>
     </Grid>
 </Window>

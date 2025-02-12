@@ -318,7 +318,7 @@ namespace io_simulation_wpf.Models
             if (Switch5) val |= (1 << 5);
             if (Switch6) val |= (1 << 6);
             if (Switch7) val |= (1 << 7);
-            return val.ToString("X2");
+            return val.ToString("x2");
         }
 
     }
