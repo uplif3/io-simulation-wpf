@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="io_simulation_wpf.Views.IOView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <StackPanel Margin="10">
+        <TextBlock Text="LEDs:" FontWeight="Bold" />
+        <WrapPanel>
+            <CheckBox Content="LED0" IsChecked="{Binding Model.Led0}" IsEnabled="False" Margin="5"/>
+            <CheckBox Content="LED1" IsChecked="{Binding Model.Led1}" IsEnabled="False" Margin="5"/>
+            <CheckBox Content="LED2" IsChecked="{Binding Model.Led2}" IsEnabled="False" Margin="5"/>
+            <CheckBox Content="LED3" IsChecked="{Binding Model.Led3}" IsEnabled="False" Margin="5"/>
+            <CheckBox Content="LED4" IsChecked="{Binding Model.Led4}" IsEnabled="False" Margin="5"/>
+            <CheckBox Content="LED5" IsChecked="{Binding Model.Led5}" IsEnabled="False" Margin="5"/>
+            <CheckBox Content="LED6" IsChecked="{Binding Model.Led6}" IsEnabled="False" Margin="5"/>
+            <CheckBox Content="LED7" IsChecked="{Binding Model.Led7}" IsEnabled="False" Margin="5"/>
+        </WrapPanel>
+
+        <TextBlock Text="Switches:" FontWeight="Bold" />
+        <WrapPanel>
+            <CheckBox Content="Switch0"
+                      IsChecked="{Binding Model.Switch0}"
+                      Command="{Binding ToggleSwitchCommand}"
+                      CommandParameter="0"
+                      Margin="5"/>
+            <CheckBox Content="Switch1"
+                      IsChecked="{Binding Model.Switch1}"
+                      Command="{Binding ToggleSwitchCommand}"
+                      CommandParameter="1"
+                      Margin="5"/>
+            <CheckBox Content="Switch2"
+                      IsChecked="{Binding Model.Switch2}"
+                      Command="{Binding ToggleSwitchCommand}"
+                      CommandParameter="2"
+                      Margin="5"/>
+            <CheckBox Content="Switch3"
+                      IsChecked="{Binding Model.Switch3}"
+                      Command="{Binding ToggleSwitchCommand}"
+                      CommandParameter="3"
+                      Margin="5"/>
+        </WrapPanel>
+
+        <TextBlock Text="Buttons:" FontWeight="Bold" />
+        <WrapPanel>
+            <CheckBox Content="Button0"
+                      IsChecked="{Binding Model.Button0}"
+                      Command="{Binding ToggleButtonCommand}"
+                      CommandParameter="0"
+                      Margin="5"/>
+            <CheckBox Content="Button1"
+                      IsChecked="{Binding Model.Button1}"
+                      Command="{Binding ToggleButtonCommand}"
+                      CommandParameter="1"
+                      Margin="5"/>
+            <CheckBox Content="Button2"
+                      IsChecked="{Binding Model.Button2}"
+                      Command="{Binding ToggleButtonCommand}"
+                      CommandParameter="2"
+                      Margin="5"/>
+            <CheckBox Content="Button3"
+                      IsChecked="{Binding Model.Button3}"
+                      Command="{Binding ToggleButtonCommand}"
+                      CommandParameter="3"
+                      Margin="5"/>
+        </WrapPanel>
+
+        <TextBlock Text="Scale0:" />
+        <Slider Minimum="0" Maximum="1023" Value="{Binding Model.Scale0}" Width="150"/>
+        <TextBlock Text="{Binding Model.Scale0}" FontWeight="Bold"/>
+
+        <TextBlock Text="Scale1:" />
+        <Slider Minimum="0" Maximum="1023" Value="{Binding Model.Scale1}" Width="150"/>
+        <TextBlock Text="{Binding Model.Scale1}" FontWeight="Bold"/>
+    </StackPanel>
+</UserControl>
