@@ -16,6 +16,7 @@ namespace io_simulation_wpf.ViewModels
         public IOViewModel IOVM { get; }
         public DebugViewModel? DebugVM { get; }
         public LogViewModel? LogVM { get; }
+        public AlarmclockViewModel? ClockVM { get; }
 
         /// <summary>
         /// Enthält das aktuell aktive Special View (z. B. ein spezielles ViewModel) oder null, wenn keiner aktiv ist.
@@ -51,6 +52,7 @@ namespace io_simulation_wpf.ViewModels
             IOVM = new IOViewModel(_serialPortService);
             DebugVM = new DebugViewModel();
             LogVM = new LogViewModel();
+            ClockVM = new AlarmclockViewModel();
 
             // 3) Am DataReceived-Event lauschen (hier wird in den UI-Thread gewechselt)
             _serialPortService.LineReceived += (sender, line) =>
@@ -71,13 +73,17 @@ namespace io_simulation_wpf.ViewModels
                 IOVM.ProcessLedPacket(line.Substring(2));
                 DebugVM?.AddDebugMessage("Recv: " + line);
             }
+            else if (line.StartsWith("d1"))
+            {
+                ClockVM?.SetHexString(line.Substring(2));
+            }
             else if (line.StartsWith("dD"))
             {
                 DebugVM?.AddDebugMessage(line.Substring(2));
             }
             else if (line.StartsWith("dL"))
             {
-                LogVM?.AddLogMessage(line);
+                LogVM?.AddLogMessage(line.Substring(2));
             }
             else if (line.StartsWith("dS"))
             {
@@ -100,7 +106,7 @@ namespace io_simulation_wpf.ViewModels
             switch (screenIdentifier)
             {
                 case 1:
-                    ActiveSpecialView = new AlarmclockViewModel();
+                    ActiveSpecialView = ClockVM;
                     break;
                 case 2:
                     ActiveSpecialView = new SeesawViewModel();

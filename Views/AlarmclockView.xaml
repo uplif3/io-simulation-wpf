@@ -6,10 +6,25 @@
       xmlns:local="clr-namespace:io_simulation_wpf.Views">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="CLOCK:"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Alarm Clock" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+            <!-- Digitalanzeige -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding HoursTens}" FontSize="48" Margin="2" FontFamily="Digital-7"/>
+                <TextBlock Text="{Binding HoursOnes}" FontSize="48" Margin="2" FontFamily="Digital-7"/>
+                <!-- Der Doppelpunkt, der blinkt -->
+                <TextBlock Text=":" FontSize="48" Margin="2" FontFamily="Digital-7"
+                   Visibility="{Binding ColonVisibility}"/>
+                <TextBlock Text="{Binding MinutesTens}" FontSize="48" Margin="2" FontFamily="Digital-7"/>
+                <TextBlock Text="{Binding MinutesOnes}" FontSize="48" Margin="2" FontFamily="Digital-7"/>
+            </StackPanel>
+            <!-- LED-Indikatoren -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <TextBlock Text="ALARM" Foreground="Red" FontWeight="Bold" Margin="10,0"
+                   Visibility="{Binding AlarmVisibility}"/>
+                <TextBlock Text="BEEP" Foreground="Orange" FontWeight="Bold" Margin="10,0"
+                   Visibility="{Binding BeepVisibility}"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>
