@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace io_simulation_wpf.ViewModels
 {
@@ -69,8 +68,8 @@ namespace io_simulation_wpf.ViewModels
             set { _beepVisibility = value; OnPropertyChanged(); }
         }
 
-        // Der Doppelpunkt soll blinken – hierfür eine Eigenschaft
-        private Visibility _colonVisibility = Visibility.Visible;
+        // Der Doppelpunkt wird jetzt direkt anhand des Pakets gesetzt
+        private Visibility _colonVisibility = Visibility.Collapsed;
         public Visibility ColonVisibility
         {
             get => _colonVisibility;
@@ -96,16 +95,7 @@ namespace io_simulation_wpf.ViewModels
         {
             // Optional: Simuliere empfangene Daten (zum Testen)
             // Raw = "3f064f6d"; // Beispiel: zeigt 00:00 an, passe entsprechend an!
-
-            // Starte einen Timer, um den Doppelpunkt blinken zu lassen (alle 0,5 Sekunden umschalten)
-            DispatcherTimer blinkTimer = new DispatcherTimer();
-            blinkTimer.Interval = TimeSpan.FromSeconds(0.5);
-            blinkTimer.Tick += (s, e) =>
-            {
-                // Wenn der Doppelpunkt aktuell sichtbar ist, ausblenden und umgekehrt.
-                ColonVisibility = (ColonVisibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
-            };
-            blinkTimer.Start();
+            // Kein Blinktimer mehr – der Doppelpunkt wird ausschließlich über den Packet-Wert gesteuert.
         }
 
         /// <summary>
@@ -123,7 +113,7 @@ namespace io_simulation_wpf.ViewModels
             if (string.IsNullOrEmpty(Raw) || Raw.Length < 8)
             {
                 HoursTens = HoursOnes = MinutesTens = MinutesOnes = "";
-                AlarmVisibility = BeepVisibility = Visibility.Collapsed;
+                AlarmVisibility = BeepVisibility = ColonVisibility = Visibility.Collapsed;
                 return;
             }
 
@@ -157,19 +147,14 @@ namespace io_simulation_wpf.ViewModels
 
                 AlarmVisibility = alarmActive ? Visibility.Visible : Visibility.Collapsed;
                 BeepVisibility = beepActive ? Visibility.Visible : Visibility.Collapsed;
-
-                // Optional: Falls der Doppelpunkt nicht aktiv sein soll, kannst du ihn ausblenden.
-                // (Hier übernimmt der Blinktimer die Steuerung; wenn colonActive false ist, kannst du ihn auch dauerhaft ausblenden.)
-                if (!colonActive)
-                {
-                    ColonVisibility = Visibility.Collapsed;
-                }
+                // Wenn der Doppelpunkt nicht aktiv ist, soll er unsichtbar sein, aber den Platz behalten:
+                ColonVisibility = colonActive ? Visibility.Visible : Visibility.Hidden;
             }
             catch (Exception)
             {
                 // Bei Fehlern die Anzeigen leeren
                 HoursTens = HoursOnes = MinutesTens = MinutesOnes = "";
-                AlarmVisibility = BeepVisibility = Visibility.Collapsed;
+                AlarmVisibility = BeepVisibility = ColonVisibility = Visibility.Collapsed;
             }
         }
 
