@@ -8,7 +8,6 @@ namespace io_simulation_wpf.ViewModels
 {
     public class AlarmclockViewModel : INotifyPropertyChanged
     {
-        // Das empfangene Rohdaten-String (z. B. "3f064f6d")
         private string _raw = "";
         public string Raw
         {
@@ -24,36 +23,36 @@ namespace io_simulation_wpf.ViewModels
             }
         }
 
-        // Anzeigeeigenschaften für die Ziffern
-        private string _hoursTens = "";
-        public string HoursTens
+        // Zifferneigenschaften als char
+        private char _hoursTens = '0';
+        public char HoursTens
         {
             get => _hoursTens;
             set { _hoursTens = value; OnPropertyChanged(); }
         }
 
-        private string _hoursOnes = "";
-        public string HoursOnes
+        private char _hoursOnes = '0';
+        public char HoursOnes
         {
             get => _hoursOnes;
             set { _hoursOnes = value; OnPropertyChanged(); }
         }
 
-        private string _minutesTens = "";
-        public string MinutesTens
+        private char _minutesTens = '0';
+        public char MinutesTens
         {
             get => _minutesTens;
             set { _minutesTens = value; OnPropertyChanged(); }
         }
 
-        private string _minutesOnes = "";
-        public string MinutesOnes
+        private char _minutesOnes = '0';
+        public char MinutesOnes
         {
             get => _minutesOnes;
             set { _minutesOnes = value; OnPropertyChanged(); }
         }
 
-        // Anzeigeeigenschaften für die LED-Indikatoren
+        // LED-Indikatoren für Alarm und Beep
         private Visibility _alarmVisibility = Visibility.Collapsed;
         public Visibility AlarmVisibility
         {
@@ -68,101 +67,83 @@ namespace io_simulation_wpf.ViewModels
             set { _beepVisibility = value; OnPropertyChanged(); }
         }
 
-        // Der Doppelpunkt wird jetzt direkt anhand des Pakets gesetzt
-        private Visibility _colonVisibility = Visibility.Collapsed;
-        public Visibility ColonVisibility
+        // Mapping: Hex-Wert (ohne Bit 7) zu Ziffer (als char)
+        private readonly Dictionary<string, char> segMap = new Dictionary<string, char>
         {
-            get => _colonVisibility;
-            set { _colonVisibility = value; OnPropertyChanged(); }
-        }
-
-        // Mapping von 2-stelligen Hex-Zeichenfolgen zu Ziffern
-        private readonly Dictionary<string, string> segMap = new Dictionary<string, string>
-        {
-            { "3f", "0" },
-            { "06", "1" },
-            { "5b", "2" },
-            { "4f", "3" },
-            { "66", "4" },
-            { "6d", "5" },
-            { "7d", "6" },
-            { "07", "7" },
-            { "7f", "8" },
-            { "6f", "9" }
+            { "3f", '0' },
+            { "06", '1' },
+            { "5b", '2' },
+            { "4f", '3' },
+            { "66", '4' },
+            { "6d", '5' },
+            { "7d", '6' },
+            { "07", '7' },
+            { "7f", '8' },
+            { "6f", '9' }
         };
 
         public AlarmclockViewModel()
         {
-            // Optional: Simuliere empfangene Daten (zum Testen)
-            // Raw = "3f064f6d"; // Beispiel: zeigt 00:00 an, passe entsprechend an!
-            // Kein Blinktimer mehr – der Doppelpunkt wird ausschließlich über den Packet-Wert gesteuert.
+            // Optional: Testdaten setzen
+            // Raw = "3f064f6d";
         }
 
         /// <summary>
-        /// Dekodiert die Rohdaten und aktualisiert die Anzeigeeigenschaften.
-        /// Das Protokoll:
-        /// - Der Hex-String besteht aus 8 Zeichen (4 Bytes).
-        /// - Byte3: Stunden Zehner (Bit 7 nicht verwendet)
-        /// - Byte2: Stunden Einer (Bit 7 enthält LED Alarm)
-        /// - Byte1: Minuten Zehner (Bit 7 enthält Doppelpunktinfo)
-        /// - Byte0: Minuten Einer (Bit 7 enthält LED Beep)
+        /// Zerlegt den Hex-String (4 Bytes) und aktualisiert die Ziffern sowie LED-Indikatoren.
+        /// Byte3: Stunden-Zehner (Bit 7 ignoriert)
+        /// Byte2: Stunden-Einer (Bit 7 = ALARM)
+        /// Byte1: Minuten-Zehner (Bit 7 = Doppelpunkt; hier nicht weiter verwendet)
+        /// Byte0: Minuten-Einer (Bit 7 = BEEP)
         /// </summary>
         private void UpdateProperties()
         {
-            // Überprüfen, ob der Rohdatenstring mindestens 8 Zeichen hat.
             if (string.IsNullOrEmpty(Raw) || Raw.Length < 8)
             {
-                HoursTens = HoursOnes = MinutesTens = MinutesOnes = "";
-                AlarmVisibility = BeepVisibility = ColonVisibility = Visibility.Collapsed;
+                HoursTens = HoursOnes = MinutesTens = MinutesOnes = ' ';
+                AlarmVisibility = BeepVisibility = Visibility.Collapsed;
                 return;
             }
 
             try
             {
-                // Zerlege den Hex-String in 4 Bytes
                 string raw = Raw;
                 byte byte3 = Convert.ToByte(raw.Substring(0, 2), 16);
                 byte byte2 = Convert.ToByte(raw.Substring(2, 2), 16);
                 byte byte1 = Convert.ToByte(raw.Substring(4, 2), 16);
                 byte byte0 = Convert.ToByte(raw.Substring(6, 2), 16);
 
-                // Hilfsmethode: Entferne das MSB (Bit 7) und dekodiere die Ziffer anhand der segMap
-                string DecodeDigit(byte b)
+                char DecodeDigit(byte b)
                 {
-                    byte value = (byte)(b & 0x7F); // Bit 7 ausblenden
-                    string hexStr = value.ToString("x2"); // 2-stelliger Hex-String in Kleinbuchstaben
-                    return segMap.TryGetValue(hexStr, out string digit) ? digit : "?";
+                    byte value = (byte)(b & 0x7F); // Bit 7 entfernen
+                    string hexStr = value.ToString("x2");
+                    return segMap.TryGetValue(hexStr, out char digit) ? digit : '?';
                 }
 
-                // Ziffern extrahieren
                 HoursTens = DecodeDigit(byte3);
                 HoursOnes = DecodeDigit(byte2);
                 MinutesTens = DecodeDigit(byte1);
                 MinutesOnes = DecodeDigit(byte0);
 
-                // LED-Indikatoren aus Bit 7 extrahieren
+                // LED-Indikatoren: Bit 7 von Byte2 = ALARM, Bit 7 von Byte0 = BEEP
                 bool alarmActive = (byte2 & 0x80) != 0;
                 bool beepActive = (byte0 & 0x80) != 0;
-                bool colonActive = (byte1 & 0x80) != 0;
-
                 AlarmVisibility = alarmActive ? Visibility.Visible : Visibility.Collapsed;
                 BeepVisibility = beepActive ? Visibility.Visible : Visibility.Collapsed;
-                // Wenn der Doppelpunkt nicht aktiv ist, soll er unsichtbar sein, aber den Platz behalten:
-                ColonVisibility = colonActive ? Visibility.Visible : Visibility.Hidden;
+
+                bool colonActive = (byte1 & 0x80) != 0;
+                IsColonOn = colonActive;
             }
             catch (Exception)
             {
-                // Bei Fehlern die Anzeigen leeren
-                HoursTens = HoursOnes = MinutesTens = MinutesOnes = "";
-                AlarmVisibility = BeepVisibility = ColonVisibility = Visibility.Collapsed;
+                HoursTens = HoursOnes = MinutesTens = MinutesOnes = ' ';
+                AlarmVisibility = BeepVisibility = Visibility.Collapsed;
             }
         }
 
         /// <summary>
-        /// Methode, um von außen einen Hex-String zu übergeben.
-        /// Das setzt den Rohdaten-String und aktualisiert damit die Anzeige.
+        /// Öffentliche Methode, um einen Hex-String zu übergeben und die Anzeige zu aktualisieren.
         /// </summary>
-        /// <param name="hexData">Der Hex-String (z. B. "3f064f6d")</param>
+        /// <param name="hexData">Der Hex-String (z. B. "3f064f6d")</param>
         public void SetHexString(string hexData)
         {
             Raw = hexData;
@@ -172,6 +153,13 @@ namespace io_simulation_wpf.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private bool _isColonOn;
+        public bool IsColonOn
+        {
+            get => _isColonOn;
+            set { _isColonOn = value; OnPropertyChanged(); }
         }
     }
 }

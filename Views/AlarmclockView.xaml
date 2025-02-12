@@ -1,30 +1,45 @@
 ﻿<UserControl x:Class="io_simulation_wpf.Views.AlarmclockView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:io_simulation_wpf.Views">
-
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:io_simulation_wpf.Views"
+             xmlns:ctrls="clr-namespace:io_simulation_wpf.Controls">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Alarm Clock" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-            <!-- Digitalanzeige -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+
+            <TextBlock Text="Alarm Clock" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" 
+                       HorizontalAlignment="Center"/>
+
+            <!-- Neu: 4 SegmentDigits + Colon -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding HoursTens}" FontSize="48" Margin="2" FontFamily="Digital-7"/>
-                <TextBlock Text="{Binding HoursOnes}" FontSize="48" Margin="2" FontFamily="Digital-7"/>
-                <!-- Der Doppelpunkt, der blinkt -->
-                <TextBlock Text=":" FontSize="48" Margin="2" FontFamily="Digital-7"
-                   Visibility="{Binding ColonVisibility}"/>
-                <TextBlock Text="{Binding MinutesTens}" FontSize="48" Margin="2" FontFamily="Digital-7"/>
-                <TextBlock Text="{Binding MinutesOnes}" FontSize="48" Margin="2" FontFamily="Digital-7"/>
+                <!-- Stunden Zehner -->
+                <ctrls:SegmentDigit Digit="{Binding HoursTens}" Margin="4,0"/>
+                <!-- Stunden Einer + LED Alarm steckt im MSB von Byte2 (bleibt unverändert in VM) -->
+                <ctrls:SegmentDigit Digit="{Binding HoursOnes}" Margin="4,0"/>
+
+                <!-- Doppelpunkt als SegmentColon, Visibility war vorher Hidden/Visible:
+                     Jetzt machen wir es über IsOn als bool. In der ViewModel-Property
+                     "ColonVisibility" kann man z.B. ein bool ableiten oder du erstellst eine 
+                     separate bool-Eigenschaft 'ColonOn'. -->
+                <ctrls:SegmentColon IsOn="{Binding IsColonOn}" Margin="10,0"/>
+
+                <!-- Minuten Zehner -->
+                <ctrls:SegmentDigit Digit="{Binding MinutesTens}" Margin="4,0"/>
+                <!-- Minuten Einer + LED Beep steckt im MSB von Byte0 -->
+                <ctrls:SegmentDigit Digit="{Binding MinutesOnes}" Margin="4,0"/>
             </StackPanel>
-            <!-- LED-Indikatoren -->
+
+            <!-- LED Indikatoren -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <!-- Alarm LED -->
                 <TextBlock Text="ALARM" Foreground="Red" FontWeight="Bold" Margin="10,0"
-                   Visibility="{Binding AlarmVisibility}"/>
+                           Visibility="{Binding AlarmVisibility}"/>
+                <!-- Beep LED -->
                 <TextBlock Text="BEEP" Foreground="Orange" FontWeight="Bold" Margin="10,0"
-                   Visibility="{Binding BeepVisibility}"/>
+                           Visibility="{Binding BeepVisibility}"/>
             </StackPanel>
+
         </StackPanel>
     </Grid>
 </UserControl>
