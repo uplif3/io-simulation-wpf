@@ -7,11 +7,11 @@ using io_simulation_wpf.Models;
 
 namespace io_simulation_wpf.ViewModels
 {
-    class AlarmclockViewModel
+    class SeesawViewModel
     {
         public DebugModel Model { get; }
 
-        public AlarmclockViewModel()
+        public SeesawViewModel()
         {
             Model = new DebugModel();
         }

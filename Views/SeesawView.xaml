@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="io_simulation_wpf.Views.AlarmclockView"
+﻿<UserControl x:Class="io_simulation_wpf.Views.SeesawView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,6 +10,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="CLOCK:"/>
+        <TextBlock Grid.Row="0" Text="SeeSaw:"/>
     </Grid>
 </UserControl>

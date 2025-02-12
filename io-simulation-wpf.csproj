@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\SeesawView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\AlarmclockView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

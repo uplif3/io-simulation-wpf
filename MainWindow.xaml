@@ -11,7 +11,18 @@
         Title="MainWindow" Height="600" Width="900">
 
     <Window.Resources>
+        <!-- Converter, der null in Collapsed und einen Wert in Visible umwandelt -->
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+
+        <!-- DataTemplate für AlarmclockViewModel -->
+        <DataTemplate DataType="{x:Type vm:AlarmclockViewModel}">
+            <views:AlarmclockView/>
+        </DataTemplate>
+
+        <!-- DataTemplate für SeesawViewModel -->
+        <DataTemplate DataType="{x:Type vm:SeesawViewModel}">
+            <views:SeesawView/>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -23,13 +34,24 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <!-- IOView: Die Grid.Row wird über eine Bindung an IOViewRow (aus MainViewModel) gesetzt -->
         <views:IOView DataContext="{Binding IOVM}" 
-              Grid.Row="{Binding DataContext.IOViewRow, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
-              x:Name="IOPanel"/>
-        <views:LogView DataContext="{Binding LogVM}" Grid.Row="0" Grid.Column="1" MinHeight="180" MaxHeight="180" MinWidth="200" x:Name="LogPanel"/>
-        <views:DebugView DataContext="{Binding DebugVM}" Grid.Row="1" Grid.Column="1" MinHeight="180" MaxHeight="180" MinWidth="200" x:Name="DebugPanel"/>
+                      Grid.Row="{Binding DataContext.IOViewRow, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                      x:Name="IOPanel"/>
+
+        <views:LogView DataContext="{Binding LogVM}" 
+                       Grid.Row="0" Grid.Column="1" 
+                       MinHeight="180" MaxHeight="180" MinWidth="200" 
+                       x:Name="LogPanel"/>
+        <views:DebugView DataContext="{Binding DebugVM}" 
+                         Grid.Row="1" Grid.Column="1" 
+                         MinHeight="180" MaxHeight="180" MinWidth="200" 
+                         x:Name="DebugPanel"/>
+
+        <!-- ContentControl für den Special Screen (Alarmclock oder Seesaw) -->
         <ContentControl Content="{Binding ActiveSpecialView}" 
-                Grid.Row="0" Grid.Column="0" 
-                Visibility="{Binding ActiveSpecialView, Converter={StaticResource NullToVisibilityConverter}}"/>
+                        Grid.Row="0" Grid.Column="0" 
+                        Visibility="{Binding ActiveSpecialView, Converter={StaticResource NullToVisibilityConverter}}"/>
     </Grid>
 </Window>

@@ -103,7 +103,7 @@ namespace io_simulation_wpf.ViewModels
                     ActiveSpecialView = new AlarmclockViewModel();
                     break;
                 case 2:
-                    //ActiveSpecialView = new SpecialScreen2ViewModel();
+                    ActiveSpecialView = new SeesawViewModel();
                     break;
                 default:
                     // Falls der Identifier unbekannt ist, wird kein Special View gesetzt.
