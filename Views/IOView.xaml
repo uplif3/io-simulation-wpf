@@ -19,43 +19,27 @@
         <WrapPanel>
             <CheckBox Content="Switch0"
                       IsChecked="{Binding Model.Switch0}"
-                      Command="{Binding ToggleSwitchCommand}"
-                      CommandParameter="0"
                       Margin="5"/>
             <CheckBox Content="Switch1"
                       IsChecked="{Binding Model.Switch1}"
-                      Command="{Binding ToggleSwitchCommand}"
-                      CommandParameter="1"
                       Margin="5"/>
             <CheckBox Content="Switch2"
                       IsChecked="{Binding Model.Switch2}"
-                      Command="{Binding ToggleSwitchCommand}"
-                      CommandParameter="2"
                       Margin="5"/>
             <CheckBox Content="Switch3"
                       IsChecked="{Binding Model.Switch3}"
-                      Command="{Binding ToggleSwitchCommand}"
-                      CommandParameter="3"
                       Margin="5"/>
             <CheckBox Content="Switch4"
                       IsChecked="{Binding Model.Switch4}"
-                      Command="{Binding ToggleSwitchCommand}"
-                      CommandParameter="4"
                       Margin="5"/>
             <CheckBox Content="Switch5"
                       IsChecked="{Binding Model.Switch5}"
-                      Command="{Binding ToggleSwitchCommand}"
-                      CommandParameter="5"
                       Margin="5"/>
             <CheckBox Content="Switch6"
                       IsChecked="{Binding Model.Switch6}"
-                      Command="{Binding ToggleSwitchCommand}"
-                      CommandParameter="6"
                       Margin="5"/>
             <CheckBox Content="Switch7"
                       IsChecked="{Binding Model.Switch7}"
-                      Command="{Binding ToggleSwitchCommand}"
-                      CommandParameter="7"
                       Margin="5"/>
         </WrapPanel>
 
@@ -63,23 +47,15 @@
         <WrapPanel>
             <CheckBox Content="Button0"
                       IsChecked="{Binding Model.Button0}"
-                      Command="{Binding ToggleButtonCommand}"
-                      CommandParameter="0"
                       Margin="5"/>
             <CheckBox Content="Button1"
                       IsChecked="{Binding Model.Button1}"
-                      Command="{Binding ToggleButtonCommand}"
-                      CommandParameter="1"
                       Margin="5"/>
             <CheckBox Content="Button2"
                       IsChecked="{Binding Model.Button2}"
-                      Command="{Binding ToggleButtonCommand}"
-                      CommandParameter="2"
                       Margin="5"/>
             <CheckBox Content="Button3"
                       IsChecked="{Binding Model.Button3}"
-                      Command="{Binding ToggleButtonCommand}"
-                      CommandParameter="3"
                       Margin="5"/>
         </WrapPanel>
 

@@ -302,7 +302,9 @@ namespace io_simulation_wpf.Models
             if (Button1) val |= (1 << 1);
             if (Button2) val |= (1 << 2);
             if (Button3) val |= (1 << 3);
-            return val.ToString("X2");
+            var res = val.ToString("x2");
+            System.Diagnostics.Debug.WriteLine(res);
+            return res;
         }
 
         public string GetSwitchStateInHex()

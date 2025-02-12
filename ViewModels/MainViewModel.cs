@@ -23,33 +23,29 @@ namespace io_simulation_wpf.ViewModels
             // 3) Sub-ViewModels anlegen & referenzieren
             IOVM = new IOViewModel(_serialPortService);
             DebugVM = new DebugViewModel();
-            //LogVM = new LogViewModel(logModel);
+            LogVM = new LogViewModel();
 
             // 4) Am DataReceived-Event lauschen
             _serialPortService.LineReceived += (sender, line) =>
             {
                 // Wir sind hier vermutlich in einem Hintergrundthread
                 // => also in den UI-Thread per Dispatcher
-                Application.Current.Dispatcher.Invoke(() => ParseLine(line));
+                Application.Current.Dispatcher.Invoke(() => ProcessPacket(line));
             };
         }
 
-        private void ParseLine(string line)
+        private void ProcessPacket(string line)
         {
-            // Grobe Beispiel-Logik: 
-            // Unterscheide, ob "IO=...", "DEBUG=...", "LOG=..."
-            if (line.StartsWith("d"))
+            if (line.StartsWith("d0"))
             {
-                IOVM.ProcessData(line.Substring(0, 2), line.Substring(2));
+                IOVM.ProcessLedPacket(line.Substring(2));
                 DebugVM?.AddDebugMessage("Recv: " + line);
             }
-            else if (line.StartsWith("DEBUG="))
+            else if (line.StartsWith("dD"))
             {
-                // => Debug-Meldung
-                var msg = line.Substring(6);
-                DebugVM?.AddDebugMessage(msg);
+                DebugVM?.AddDebugMessage(line.Substring(2));
             }
-            else if (line.StartsWith("LOG="))
+            else if (line.StartsWith("dL"))
             {
                 LogVM?.AddLogMessage(line);
             }
