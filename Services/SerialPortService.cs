@@ -38,8 +38,6 @@ namespace io_simulation_wpf.Services
                 // Solange noch Daten im Puffer sind
                 while (port.BytesToRead > 0)
                 {
-                    // Lies alle verfügbaren Zeichen (oder 1 Byte, je nach Geschmack)
-                    // ReadExisting() gibt dir den aktuellen Buffer als String
                     string chunk = port.ReadExisting();
                     // Durchlaufen wir jedes Zeichen
                     foreach (char c in chunk)
@@ -66,7 +64,6 @@ namespace io_simulation_wpf.Services
             }
             catch (Exception ex)
             {
-                var asd = ex.Message;
                 // Fehlerbehandlung, z.B. Loggen
             }
         }

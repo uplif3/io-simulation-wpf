@@ -11,15 +11,12 @@
         Title="MainWindow" Height="800" Width="1000">
 
     <Window.Resources>
-        <!-- Converter, der null in Collapsed und einen Wert in Visible umwandelt -->
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
 
-        <!-- DataTemplate für AlarmclockViewModel -->
         <DataTemplate DataType="{x:Type vm:AlarmclockViewModel}">
             <views:AlarmclockView/>
         </DataTemplate>
 
-        <!-- DataTemplate für SeesawViewModel -->
         <DataTemplate DataType="{x:Type vm:SeesawViewModel}">
             <views:SeesawView/>
         </DataTemplate>
@@ -28,7 +25,6 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Verbindung">
-                <!-- Hier kommt das Sub-Menü mit den dynamischen Ports -->
                 <MenuItem Header="COM Port auswählen"
                           ItemsSource="{Binding AvailablePorts}">
                     <MenuItem.ItemContainerStyle>
@@ -62,7 +58,6 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- IOView: Die Grid.Row wird über eine Bindung an IOViewRow (aus MainViewModel) gesetzt -->
             <views:IOView DataContext="{Binding IOVM}" 
                           Grid.Row="{Binding DataContext.IOViewRow, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
                           x:Name="IOPanel"/>

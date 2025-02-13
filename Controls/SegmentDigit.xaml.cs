@@ -76,7 +76,6 @@ namespace io_simulation_wpf.Controls
                     segA = segB = segC = segD = segF = segG = true;
                     break;
                 default:
-                    // "?" -> Alle aus oder du färbst alle rot als "Fehler"
                     segA = segB = segC = segD = segE = segF = segG = false;
                     break;
             }

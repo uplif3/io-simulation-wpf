@@ -99,7 +99,7 @@ namespace io_simulation_wpf.Controls
             double markerWidth = 6.0;
             double markerHeight = 11.0;
 
-            // *** 1) STAND ***
+            //STAND
             var p1 = ToCanvas(basePt, -standWidth / 2, 0);
             var p2 = ToCanvas(basePt, 0, standHeight);
             var p3 = ToCanvas(basePt, standWidth / 2, 0);
@@ -112,7 +112,7 @@ namespace io_simulation_wpf.Controls
             var standGeometry = new PathGeometry(new[] { standFigure });
             dc.DrawGeometry(new SolidColorBrush(colorStand), null, standGeometry);
 
-            // *** 2) REFERENCE MARKER ***
+            //REFERENCE MARKER
             double markerRawX = Reference / 0.6 * ((seesawWidth / 2) - 1.5 * rBall);
             double markerRawY = 180.0 - 1.0;
 
@@ -128,7 +128,7 @@ namespace io_simulation_wpf.Controls
             var markerGeometry = new PathGeometry(new[] { markerFigure });
             dc.DrawGeometry(new SolidColorBrush(colorRef), null, markerGeometry);
 
-            // *** 3) RAMP-LINIE ***
+            //RAMP-LINE
             double angleRad = Angle * Math.PI / 180.0;
             double tanAngle = Math.Tan(angleRad);
 
@@ -148,14 +148,14 @@ namespace io_simulation_wpf.Controls
             dc.DrawLine(rampPen, rampP1, rampP2);
 
 
-            // *** 4) BALL - Bewegt sich mit der Wippe ***
+            //BALL
             double ballX = Ball / 0.6 * seesawHalfWidth;
             double ballY = seesawPivotY - tanAngle * ballX + rBall;
 
             var ballCenter = ToCanvas(basePt, ballX, ballY);
             dc.DrawEllipse(new SolidColorBrush(colorBall), null, ballCenter, rBall, rBall);
 
-            // *** 5) BOING! ***
+            //BOING
             var boingColor = Boing ? colorBoingOn : colorBoingOff;
             var text = new FormattedText(
                 "Boing!",

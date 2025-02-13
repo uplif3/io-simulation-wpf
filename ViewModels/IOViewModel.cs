@@ -18,7 +18,6 @@ namespace io_simulation_wpf.ViewModels
 
         private readonly HashSet<Key> _pressedKeys = new HashSet<Key>();
 
-        // ICommand-Properties für KeyBindings
         public ICommand HandleKeyDown { get; }
         public ICommand HandleKeyUp { get; }
 
@@ -29,23 +28,19 @@ namespace io_simulation_wpf.ViewModels
 
             this.Model.PropertyChanged += Model_PropertyChanged;
 
-            // Commands initialisieren
             HandleKeyDown = new RelayCommand(param => ProcessKeyDown((Key)Enum.Parse(typeof(Key), param.ToString())));
             HandleKeyUp = new RelayCommand(param => ProcessKeyUp((Key)Enum.Parse(typeof(Key), param.ToString())));
-
 
         }
 
         private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e is null || e.PropertyName is null) throw new NullReferenceException("Unknown Prop changed?");
-            // Prüfe, ob ein Schalter geändert wurde:
             if (e.PropertyName.StartsWith("Switch"))
             {
                 string hexVal = Model.GetSwitchStateInHex();
                 port.WriteLine($"d01{hexVal}");
             }
-            // Falls du auch Button-Änderungen verarbeiten möchtest:
             else if (e.PropertyName.StartsWith("Button"))
             {
                 string hexVal = Model.GetButtonStateInHex();

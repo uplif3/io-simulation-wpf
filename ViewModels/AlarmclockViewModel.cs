@@ -23,7 +23,6 @@ namespace io_simulation_wpf.ViewModels
             }
         }
 
-        // Zifferneigenschaften als char
         private char _hoursTens = '0';
         public char HoursTens
         {
@@ -52,7 +51,6 @@ namespace io_simulation_wpf.ViewModels
             set { _minutesOnes = value; OnPropertyChanged(); }
         }
 
-        // LED-Indikatoren für Alarm und Beep
         private Visibility _alarmVisibility = Visibility.Collapsed;
         public Visibility AlarmVisibility
         {
@@ -67,7 +65,6 @@ namespace io_simulation_wpf.ViewModels
             set { _beepVisibility = value; OnPropertyChanged(); }
         }
 
-        // Mapping: Hex-Wert (ohne Bit 7) zu Ziffer (als char)
         private readonly Dictionary<string, char> segMap = new Dictionary<string, char>
         {
             { "3f", '0' },
@@ -84,8 +81,7 @@ namespace io_simulation_wpf.ViewModels
 
         public AlarmclockViewModel()
         {
-            // Optional: Testdaten setzen
-            // Raw = "3f064f6d";
+
         }
 
         /// <summary>

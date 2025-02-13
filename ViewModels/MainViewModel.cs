@@ -53,7 +53,6 @@ namespace io_simulation_wpf.ViewModels
 
         public MainViewModel()
         {
-            // 1) Serial-Port-Service anlegen
             _serialPortService = new SerialPortService();
 
             AvailablePorts = new ObservableCollection<string>(_serialPortService.GetAvailablePorts());
@@ -61,14 +60,12 @@ namespace io_simulation_wpf.ViewModels
             SelectPortCommand = new RelayCommand(param => SelectPort(param));
             DisconnectCommand = new RelayCommand(param => Disconnect());
 
-            // 2) Sub-ViewModels anlegen & referenzieren
             IOVM = new IOViewModel(_serialPortService);
             DebugVM = new DebugViewModel();
             LogVM = new LogViewModel();
             ClockVM = new AlarmclockViewModel();
             SeesawVM = new SeesawViewModel();
 
-            // 3) Am DataReceived-Event lauschen (hier wird in den UI-Thread gewechselt)
             _serialPortService.LineReceived += (sender, line) =>
             {
                 Application.Current.Dispatcher.Invoke(() => ProcessPacket(line));

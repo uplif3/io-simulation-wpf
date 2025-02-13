@@ -11,9 +11,9 @@ namespace io_simulation_wpf.Converters
         {
             if (value is bool isOn)
             {
-                return isOn ? Brushes.LimeGreen : Brushes.DarkGray; // AN: Grün, AUS: Grau
+                return isOn ? Brushes.LimeGreen : Brushes.DarkGray; 
             }
-            return Brushes.DarkGray; // Standardmäßig AUS
+            return Brushes.DarkGray; 
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

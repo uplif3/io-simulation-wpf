@@ -20,3 +20,6 @@ Prototype of the io-simulation project using WPF.
 
 ## Known issues
 - The Keybinds only work after 1 click on one of the buttons
+
+## ToDo
+- Model for each SpecialView
