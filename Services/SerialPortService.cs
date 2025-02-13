@@ -11,7 +11,7 @@ namespace io_simulation_wpf.Services
     {
         private SerialPort port;
         private StringBuilder _readBuffer = new StringBuilder();
-        public event EventHandler<string> LineReceived;
+        public event EventHandler<string>? LineReceived;
 
         public SerialPortService(string portName, int baudRate)
         {
@@ -56,6 +56,7 @@ namespace io_simulation_wpf.Services
             }
             catch (Exception ex)
             {
+                var asd = ex.Message;
                 // Fehlerbehandlung, z.B. Loggen
             }
         }
