@@ -25,33 +25,62 @@
         </DataTemplate>
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Verbindung">
+                <!-- Hier kommt das Sub-Menü mit den dynamischen Ports -->
+                <MenuItem Header="COM Port auswählen"
+                          ItemsSource="{Binding AvailablePorts}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <!-- Der Portname (string) selbst ist hier das DataContext-Objekt.
+                                 Deshalb wird Header direkt an diesen String gebunden. -->
+                            <Setter Property="Header" Value="{Binding}" />
 
-        <!-- IOView: Die Grid.Row wird über eine Bindung an IOViewRow (aus MainViewModel) gesetzt -->
-        <views:IOView DataContext="{Binding IOVM}" 
-                      Grid.Row="{Binding DataContext.IOViewRow, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
-                      x:Name="IOPanel"/>
+                            <!-- Wir übergeben denselben Wert (string) als CommandParameter -->
+                            <Setter Property="CommandParameter" Value="{Binding}" />
 
-        <views:LogView DataContext="{Binding LogVM}" 
-                       Grid.Row="0" Grid.Column="1" 
-                       MinHeight="180" MaxHeight="180" MinWidth="200" 
-                       x:Name="LogPanel"/>
-        <views:DebugView DataContext="{Binding DebugVM}" 
-                         Grid.Row="1" Grid.Column="1" 
-                         MinHeight="180" MaxHeight="180" MinWidth="200" 
-                         x:Name="DebugPanel"/>
+                            <!-- Wir binden den Command an SelectPortCommand des MainViewModels.
+                                 Da die Items den Portnamen als DataContext haben, brauchen wir
+                                 eine RelativeSource, die zum übergeordneten Menü hochgeht. -->
+                            <Setter Property="Command" 
+                                    Value="{Binding DataContext.SelectPortCommand,
+                                            RelativeSource={RelativeSource AncestorType=MenuItem, AncestorLevel=1}}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem Header="Trennen" Command="{Binding DisconnectCommand}" />
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- ContentControl für den Special Screen (Alarmclock oder Seesaw) -->
-        <ContentControl Content="{Binding ActiveSpecialView}" 
-                        Grid.Row="0" Grid.Column="0" 
-                        Visibility="{Binding ActiveSpecialView, Converter={StaticResource NullToVisibilityConverter}}"/>
-    </Grid>
+            <!-- IOView: Die Grid.Row wird über eine Bindung an IOViewRow (aus MainViewModel) gesetzt -->
+            <views:IOView DataContext="{Binding IOVM}" 
+                          Grid.Row="{Binding DataContext.IOViewRow, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                          x:Name="IOPanel"/>
+
+            <views:LogView DataContext="{Binding LogVM}" 
+                           Grid.Row="0" Grid.Column="1" 
+                           MinHeight="180" MaxHeight="180" MinWidth="200" 
+                           x:Name="LogPanel"/>
+            <views:DebugView DataContext="{Binding DebugVM}" 
+                             Grid.Row="1" Grid.Column="1" 
+                             MinHeight="180" MaxHeight="180" MinWidth="200" 
+                             x:Name="DebugPanel"/>
+
+            <!-- ContentControl für den Special Screen (Alarmclock oder Seesaw) -->
+            <ContentControl Content="{Binding ActiveSpecialView}" 
+                            Grid.Row="0" Grid.Column="0" 
+                            Visibility="{Binding ActiveSpecialView, Converter={StaticResource NullToVisibilityConverter}}"/>
+        </Grid>
+    </DockPanel>
+    
 </Window>

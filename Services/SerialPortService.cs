@@ -9,14 +9,24 @@ namespace io_simulation_wpf.Services
 {
     public class SerialPortService
     {
-        private SerialPort port;
+        private SerialPort? port;
+
+        public string PortName { get; set; }
+        public int BaudRate { get; set; }
+
+
         private StringBuilder _readBuffer = new StringBuilder();
         public event EventHandler<string>? LineReceived;
 
-        public SerialPortService(string portName, int baudRate)
+        public SerialPortService()
         {
-            port = new SerialPort(portName, baudRate);
-            var portNames = SerialPort.GetPortNames();
+
+        }
+
+        public void Open()
+        {
+            if (port is not null) port.Close();
+            port = new SerialPort(PortName, BaudRate);
             port.DataReceived += OnDataRecieved;
             port.Open();
         }

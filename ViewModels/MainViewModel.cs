@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using io_simulation_wpf.Models;
 using io_simulation_wpf.Services;
 
@@ -44,10 +46,20 @@ namespace io_simulation_wpf.ViewModels
         /// </summary>
         public int IOViewRow => ActiveSpecialView == null ? 0 : 1;
 
+        public ObservableCollection<string> AvailablePorts { get; set; }
+        public ICommand DisconnectCommand { get; }
+        public ICommand SelectPortCommand { get; }
+
+
         public MainViewModel()
         {
             // 1) Serial-Port-Service anlegen
-            _serialPortService = new SerialPortService("COM4", 9600);
+            _serialPortService = new SerialPortService();
+
+            AvailablePorts = new ObservableCollection<string>(_serialPortService.GetAvailablePorts());
+
+            SelectPortCommand = new RelayCommand(param => SelectPort(param));
+            DisconnectCommand = new RelayCommand(param => Disconnect());
 
             // 2) Sub-ViewModels anlegen & referenzieren
             IOVM = new IOViewModel(_serialPortService);
@@ -61,6 +73,38 @@ namespace io_simulation_wpf.ViewModels
             {
                 Application.Current.Dispatcher.Invoke(() => ProcessPacket(line));
             };
+        }
+
+        private void SelectPort(object param)
+        {
+            if (param is string portName)
+            {
+                try
+                {
+                    // Falls ein Port offen ist, zuerst schließen
+                    _serialPortService.Close();
+
+
+                    // Neuen Port setzen
+                    _serialPortService.PortName = portName;
+                    _serialPortService.BaudRate = 9600;
+                    // Port öffnen
+                    _serialPortService.Open();
+
+                    MessageBox.Show($"Verbunden mit {portName}!", "Info",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Fehler beim Verbinden mit {portName}: {ex.Message}",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void Disconnect()
+        {
+            _serialPortService.Close();
         }
 
         /// <summary>
