@@ -1,61 +1,95 @@
 ﻿<UserControl x:Class="io_simulation_wpf.Views.IOView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:converters="clr-namespace:io_simulation_wpf.Converters">
+
+    <UserControl.Resources>
+        <converters:LedColorConverter x:Key="LedColorConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="D1" Command="{Binding HandleKeyDown}" CommandParameter="D1"/>
+        <KeyBinding Key="D2" Command="{Binding HandleKeyDown}" CommandParameter="D2"/>
+        <KeyBinding Key="D3" Command="{Binding HandleKeyDown}" CommandParameter="D3"/>
+        <KeyBinding Key="D4" Command="{Binding HandleKeyDown}" CommandParameter="D4"/>
+
+        <KeyBinding Key="D1" Command="{Binding HandleKeyUp}" CommandParameter="D1"/>
+        <KeyBinding Key="D2" Command="{Binding HandleKeyUp}" CommandParameter="D2"/>
+        <KeyBinding Key="D3" Command="{Binding HandleKeyUp}" CommandParameter="D3"/>
+        <KeyBinding Key="D4" Command="{Binding HandleKeyUp}" CommandParameter="D4"/>
+    </UserControl.InputBindings>
+
     <StackPanel Margin="10">
         <TextBlock Text="LEDs:" FontWeight="Bold" />
         <WrapPanel>
-            <CheckBox Content="LED0" IsChecked="{Binding Model.Led0}" IsEnabled="False" Margin="5"/>
-            <CheckBox Content="LED1" IsChecked="{Binding Model.Led1}" IsEnabled="False" Margin="5"/>
-            <CheckBox Content="LED2" IsChecked="{Binding Model.Led2}" IsEnabled="False" Margin="5"/>
-            <CheckBox Content="LED3" IsChecked="{Binding Model.Led3}" IsEnabled="False" Margin="5"/>
-            <CheckBox Content="LED4" IsChecked="{Binding Model.Led4}" IsEnabled="False" Margin="5"/>
-            <CheckBox Content="LED5" IsChecked="{Binding Model.Led5}" IsEnabled="False" Margin="5"/>
-            <CheckBox Content="LED6" IsChecked="{Binding Model.Led6}" IsEnabled="False" Margin="5"/>
-            <CheckBox Content="LED7" IsChecked="{Binding Model.Led7}" IsEnabled="False" Margin="5"/>
+            <Ellipse Width="20" Height="20"
+             Fill="{Binding Model.Led7, Converter={StaticResource LedColorConverter}}"
+             Stroke="Black" StrokeThickness="1" Margin="5"/>
+            <Ellipse Width="20" Height="20"
+             Fill="{Binding Model.Led6, Converter={StaticResource LedColorConverter}}"
+             Stroke="Black" StrokeThickness="1" Margin="5"/>
+            <Ellipse Width="20" Height="20"
+             Fill="{Binding Model.Led5, Converter={StaticResource LedColorConverter}}"
+             Stroke="Black" StrokeThickness="1" Margin="5"/>
+            <Ellipse Width="20" Height="20"
+             Fill="{Binding Model.Led4, Converter={StaticResource LedColorConverter}}"
+             Stroke="Black" StrokeThickness="1" Margin="5"/>
+            <Ellipse Width="20" Height="20"
+             Fill="{Binding Model.Led3, Converter={StaticResource LedColorConverter}}"
+             Stroke="Black" StrokeThickness="1" Margin="5"/>
+            <Ellipse Width="20" Height="20"
+             Fill="{Binding Model.Led2, Converter={StaticResource LedColorConverter}}"
+             Stroke="Black" StrokeThickness="1" Margin="5"/>
+            <Ellipse Width="20" Height="20"
+             Fill="{Binding Model.Led1, Converter={StaticResource LedColorConverter}}"
+             Stroke="Black" StrokeThickness="1" Margin="5"/>
+            <Ellipse Width="20" Height="20"
+             Fill="{Binding Model.Led0, Converter={StaticResource LedColorConverter}}"
+             Stroke="Black" StrokeThickness="1" Margin="5"/>
         </WrapPanel>
+
 
         <TextBlock Text="Switches:" FontWeight="Bold" />
         <WrapPanel>
-            <CheckBox Content="Switch0"
-                      IsChecked="{Binding Model.Switch0}"
-                      Margin="5"/>
-            <CheckBox Content="Switch1"
-                      IsChecked="{Binding Model.Switch1}"
-                      Margin="5"/>
-            <CheckBox Content="Switch2"
-                      IsChecked="{Binding Model.Switch2}"
-                      Margin="5"/>
-            <CheckBox Content="Switch3"
-                      IsChecked="{Binding Model.Switch3}"
-                      Margin="5"/>
-            <CheckBox Content="Switch4"
-                      IsChecked="{Binding Model.Switch4}"
-                      Margin="5"/>
-            <CheckBox Content="Switch5"
-                      IsChecked="{Binding Model.Switch5}"
+            <CheckBox Content="Switch7"
+                      IsChecked="{Binding Model.Switch7}"
                       Margin="5"/>
             <CheckBox Content="Switch6"
                       IsChecked="{Binding Model.Switch6}"
                       Margin="5"/>
-            <CheckBox Content="Switch7"
-                      IsChecked="{Binding Model.Switch7}"
+            <CheckBox Content="Switch5"
+                      IsChecked="{Binding Model.Switch5}"
+                      Margin="5"/>
+            <CheckBox Content="Switch4"
+                      IsChecked="{Binding Model.Switch4}"
+                      Margin="5"/>
+            <CheckBox Content="Switch3"
+                      IsChecked="{Binding Model.Switch3}"
+                      Margin="5"/>
+            <CheckBox Content="Switch2"
+                      IsChecked="{Binding Model.Switch2}"
+                      Margin="5"/>
+            <CheckBox Content="Switch1"
+                      IsChecked="{Binding Model.Switch1}"
+                      Margin="5"/>
+            <CheckBox Content="Switch0"
+                      IsChecked="{Binding Model.Switch0}"
                       Margin="5"/>
         </WrapPanel>
 
         <TextBlock Text="Buttons:" FontWeight="Bold" />
         <WrapPanel>
-            <CheckBox Content="Button0"
-                      IsChecked="{Binding Model.Button0}"
-                      Margin="5"/>
-            <CheckBox Content="Button1"
-                      IsChecked="{Binding Model.Button1}"
+            <CheckBox Content="Button3"
+                      IsChecked="{Binding Model.Button3}"
                       Margin="5"/>
             <CheckBox Content="Button2"
                       IsChecked="{Binding Model.Button2}"
                       Margin="5"/>
-            <CheckBox Content="Button3"
-                      IsChecked="{Binding Model.Button3}"
+            <CheckBox Content="Button1"
+                      IsChecked="{Binding Model.Button1}"
+                      Margin="5"/>
+            <CheckBox Content="Button0"
+                      IsChecked="{Binding Model.Button0}"
                       Margin="5"/>
         </WrapPanel>
 

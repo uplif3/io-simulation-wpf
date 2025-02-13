@@ -81,18 +81,10 @@ namespace io_simulation_wpf.ViewModels
             {
                 try
                 {
-                    // Falls ein Port offen ist, zuerst schließen
                     _serialPortService.Close();
-
-
-                    // Neuen Port setzen
                     _serialPortService.PortName = portName;
                     _serialPortService.BaudRate = 9600;
-                    // Port öffnen
                     _serialPortService.Open();
-
-                    MessageBox.Show($"Verbunden mit {portName}!", "Info",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
@@ -117,7 +109,6 @@ namespace io_simulation_wpf.ViewModels
             if (line.StartsWith("d0"))
             {
                 IOVM.ProcessLedPacket(line.Substring(2));
-                DebugVM?.AddDebugMessage("Recv: " + line);
             }
             else if (line.StartsWith("d1"))
             {

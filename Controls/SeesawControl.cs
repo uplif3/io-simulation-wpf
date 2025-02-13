@@ -136,7 +136,6 @@ namespace io_simulation_wpf.Controls
             double seesawHalfWidth = seesawWidth / 2.0;
             double yOffset = tanAngle * seesawHalfWidth;
 
-            // KORREKT: Linker Punkt geht nach unten, wenn der Ball links ist
             double yLeft = seesawPivotY + yOffset;
             double yRight = seesawPivotY - yOffset;
 

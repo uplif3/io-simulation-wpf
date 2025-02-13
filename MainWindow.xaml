@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:io_simulation_wpf.Converters"
         xmlns:vm="clr-namespace:io_simulation_wpf.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900">
+        Title="MainWindow" Height="800" Width="1000">
 
     <Window.Resources>
         <!-- Converter, der null in Collapsed und einen Wert in Visible umwandelt -->
@@ -54,7 +54,7 @@
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="630"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>

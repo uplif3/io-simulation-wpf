@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:io_simulation_wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>
