@@ -9,7 +9,7 @@ namespace io_simulation_wpf.Controls
     {
         private const int GraphWidth = 600;
         private const int GraphHeight = 150;
-        private const int GraphMaxPoints = 100;
+        private const int GraphMaxPoints = 200;
 
         // Speichern die "Y-Werte" bereits skaliert für alle drei Kurven
         private readonly double[] _referenceGraph = new double[GraphMaxPoints];
