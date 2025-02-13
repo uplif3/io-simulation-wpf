@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -8,27 +7,30 @@ namespace io_simulation_wpf.Controls
 {
     public class SeesawGraphControl : Control
     {
-        static SeesawGraphControl()
+        private const int GraphWidth = 600;
+        private const int GraphHeight = 150;
+        private const int GraphMaxPoints = 100;
+
+        // Hier speichern wir die SCALED-Y-Werte, index = x-Position
+        private readonly double[] _referenceGraph = new double[GraphMaxPoints];
+        private readonly double[] _ballGraph = new double[GraphMaxPoints];
+        private readonly double[] _angleGraph = new double[GraphMaxPoints];
+
+        // Index, an den als Nächstes geschrieben wird
+        private int _currentIndex = 0;
+        private int _count = 0;
+
+        // Ab hier deine DependencyProperties
+        // -----------------------------------
+
+        public SeesawGraphControl()
         {
-        }
-
-        #region DependencyProperties
-
-        public static readonly DependencyProperty ReferenceProperty =
-            DependencyProperty.Register(nameof(Reference), typeof(double), typeof(SeesawGraphControl),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, OnGraphDataChanged));
-
-        public static readonly DependencyProperty BallProperty =
-            DependencyProperty.Register(nameof(Ball), typeof(double), typeof(SeesawGraphControl),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, OnGraphDataChanged));
-
-        public static readonly DependencyProperty AngleProperty =
-            DependencyProperty.Register(nameof(Angle), typeof(double), typeof(SeesawGraphControl),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, OnGraphDataChanged));
-
-        private static void OnGraphDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((SeesawGraphControl)d).UpdateGraphData();
+            for (int i = 0; i < GraphMaxPoints; i++)
+            {
+                _referenceGraph[i] = double.NaN;
+                _ballGraph[i] = double.NaN;
+                _angleGraph[i] = double.NaN;
+            }
         }
 
         public double Reference
@@ -36,117 +38,159 @@ namespace io_simulation_wpf.Controls
             get => (double)GetValue(ReferenceProperty);
             set => SetValue(ReferenceProperty, value);
         }
-
+        public static readonly DependencyProperty ReferenceProperty =
+            DependencyProperty.Register(nameof(Reference), typeof(double),
+                typeof(SeesawGraphControl),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender,
+                    OnGraphDataChanged));
 
         public double Ball
         {
             get => (double)GetValue(BallProperty);
             set => SetValue(BallProperty, value);
         }
+        public static readonly DependencyProperty BallProperty =
+            DependencyProperty.Register(nameof(Ball), typeof(double),
+                typeof(SeesawGraphControl),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender,
+                    OnGraphDataChanged));
 
         public double Angle
         {
             get => (double)GetValue(AngleProperty);
             set => SetValue(AngleProperty, value);
         }
+        public static readonly DependencyProperty AngleProperty =
+            DependencyProperty.Register(nameof(Angle), typeof(double),
+                typeof(SeesawGraphControl),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender,
+                    OnGraphDataChanged));
 
-        #endregion
+        private static void OnGraphDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((SeesawGraphControl)d).UpdateGraphData();
+        }
 
-        private const int GraphWidth = 600;
-        private const int GraphHeight = 150;
-        private const int GraphMaxPoints = 100;
-
-        private readonly Queue<Point> _referenceGraph = new();
-        private readonly Queue<Point> _ballGraph = new();
-        private readonly Queue<Point> _angleGraph = new();
-        private int _graphIndex = 0;
+        // -----------------------------------
 
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
 
             var graphBase = new Point(10, 10);
-            DrawGraph(dc, graphBase);
-        }
 
-        private void DrawGraph(DrawingContext dc, Point graphBase)
-        {
-            var gridColor = new SolidColorBrush(Color.FromRgb(0x40, 0x40, 0x40));
+            // 1) Hintergrund und Gitter zeichnen
+            DrawBackgroundAndGrid(dc, graphBase);
+
+            // 2) Kurven zeichnen
             var refColor = new SolidColorBrush(Color.FromRgb(0xFC, 0xF8, 0x00));
             var ballColor = new SolidColorBrush(Color.FromRgb(0xF0, 0xF0, 0xF0));
             var angleColor = new SolidColorBrush(Color.FromRgb(0x00, 0x4D, 0xE6));
 
-            // Hintergrund zeichnen
-            dc.DrawRectangle(new SolidColorBrush(Color.FromRgb(0, 0, 0)), null,
+            DrawGraphCurve(dc, _referenceGraph, refColor, graphBase);
+            DrawGraphCurve(dc, _ballGraph, ballColor, graphBase);
+            DrawGraphCurve(dc, _angleGraph, angleColor, graphBase);
+
+            // 3) Cursor zeichnen
+            DrawCursor(dc, graphBase);
+        }
+
+        private void DrawBackgroundAndGrid(DrawingContext dc, Point graphBase)
+        {
+            // Hintergrund
+            dc.DrawRectangle(Brushes.Black, null,
                 new Rect(graphBase.X, graphBase.Y, GraphWidth, GraphHeight));
 
-            // Gitter zeichnen
+            // Gitter
+            var gridPen = new Pen(new SolidColorBrush(Color.FromRgb(0x40, 0x40, 0x40)), 1);
             for (int i = 0; i < GraphWidth; i += 50)
             {
                 var p1 = new Point(graphBase.X + i, graphBase.Y);
                 var p2 = new Point(graphBase.X + i, graphBase.Y + GraphHeight);
-                dc.DrawLine(new Pen(gridColor, 1), p1, p2);
+                dc.DrawLine(gridPen, p1, p2);
             }
-
             for (int i = 0; i < GraphHeight; i += 30)
             {
                 var p1 = new Point(graphBase.X, graphBase.Y + i);
                 var p2 = new Point(graphBase.X + GraphWidth, graphBase.Y + i);
-                dc.DrawLine(new Pen(gridColor, 1), p1, p2);
+                dc.DrawLine(gridPen, p1, p2);
             }
-
-            // Zeichne Kurven
-            DrawGraphCurve(dc, _referenceGraph, refColor, graphBase);
-            DrawGraphCurve(dc, _ballGraph, ballColor, graphBase);
-            DrawGraphCurve(dc, _angleGraph, angleColor, graphBase);
         }
 
-        private void DrawGraphCurve(DrawingContext dc, Queue<Point> data, Brush color, Point graphBase)
+        private void DrawGraphCurve(DrawingContext dc, double[] data, Brush color, Point graphBase)
         {
-            if (data.Count < 2) return;
-
             var pen = new Pen(color, 2);
-            var prev = data.Peek();
 
-            foreach (var point in data)
+            // X-Schritt = gesamte Breite / (Anzahl Punkte - 1)
+            double xStep = (GraphMaxPoints > 1)
+                ? (double)GraphWidth / (GraphMaxPoints - 1)
+                : GraphWidth;
+
+            // Wir zeichnen Linien von i zu i+1
+            for (int i = 0; i < GraphMaxPoints - 1; i++)
             {
-                // Die Punkte werden relativ zur Graph-Höhe verschoben
-                var p1 = new Point(graphBase.X + prev.X * (GraphWidth / GraphMaxPoints), graphBase.Y + (GraphHeight / 2) - prev.Y);
-                var p2 = new Point(graphBase.X + point.X * (GraphWidth / GraphMaxPoints), graphBase.Y + (GraphHeight / 2) - point.Y);
+                int i2 = i + 1;
 
-                dc.DrawLine(pen, p1, p2);
-                prev = point;
+                // Wenn wir am Wrap-Punkt sind: Keine Linie ziehen
+                // z.B. wenn i == _currentIndex und i2 = _currentIndex+1 -> bedeutet "frisch überschrieben"
+                if (i == _currentIndex && i2 == (_currentIndex + 1) % GraphMaxPoints)
+                {
+                    // optional: so kannst du "Linie unterbrechen" beim Neustart
+                    continue;
+                }
+
+                // X-Koordinaten
+                double x1 = graphBase.X + i * xStep;
+                double x2 = graphBase.X + i2 * xStep;
+
+                // Y-Koordinaten (Mitte = graphBase.Y + GraphHeight/2)
+                double y1 = graphBase.Y + (GraphHeight / 2) - data[i];
+                double y2 = graphBase.Y + (GraphHeight / 2) - data[i2];
+
+                dc.DrawLine(pen, new Point(x1, y1), new Point(x2, y2));
             }
         }
 
+        private void DrawCursor(DrawingContext dc, Point graphBase)
+        {
+            // Cursor soll genau an _currentIndex stehen
+            double xStep = (GraphMaxPoints > 1)
+                ? (double)GraphWidth / (GraphMaxPoints - 1)
+                : GraphWidth;
+
+            double cursorX = graphBase.X + _currentIndex * xStep;
+
+            var cursorPen = new Pen(Brushes.Orange, 1);
+            dc.DrawLine(cursorPen,
+                        new Point(cursorX, graphBase.Y),
+                        new Point(cursorX, graphBase.Y + GraphHeight));
+        }
 
         public void UpdateGraphData()
         {
-            if (_graphIndex >= GraphMaxPoints)
-            {
-                _graphIndex = 0; // 🔄 Zurücksetzen, wenn der Graph voll ist
-            }
-
-            // Skalierung der Werte für das Zeichnen
+            // Skalieren
             double referenceScaled = (Reference / 0.6) * (GraphHeight / 2);
             double ballScaled = (Ball / 0.6) * (GraphHeight / 2);
             double angleScaled = (Angle / 15.0) * (GraphHeight / 2);
 
-            // Neuen Punkt hinzufügen
-            _referenceGraph.Enqueue(new Point(_graphIndex, referenceScaled));
-            _ballGraph.Enqueue(new Point(_graphIndex, ballScaled));
-            _angleGraph.Enqueue(new Point(_graphIndex, angleScaled));
+            // Schreiben
+            _referenceGraph[_currentIndex] = referenceScaled;
+            _ballGraph[_currentIndex] = ballScaled;
+            _angleGraph[_currentIndex] = angleScaled;
 
-            // Alte Werte entfernen, damit die Queue nicht zu lang wird
-            if (_referenceGraph.Count > GraphMaxPoints) _referenceGraph.Dequeue();
-            if (_ballGraph.Count > GraphMaxPoints) _ballGraph.Dequeue();
-            if (_angleGraph.Count > GraphMaxPoints) _angleGraph.Dequeue();
+            // Index weiter
+            _currentIndex++;
+            if (_currentIndex >= GraphMaxPoints)
+            {
+                _currentIndex = 0;
+            }
 
-            _graphIndex++; // Weiterzählen
+            // Hochzählen, wie viele Werte wir schon haben, aber nicht über Max
+            _count = Math.Min(_count + 1, GraphMaxPoints);
 
-            // 🔄 Erzwinge Neuzeichnen
             InvalidateVisual();
         }
 
     }
+
 }
