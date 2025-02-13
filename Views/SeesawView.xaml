@@ -4,16 +4,29 @@
              xmlns:local="clr-namespace:io_simulation_wpf.Controls"
              Height="400" Width="600">
     <Grid>
-        <!-- 
-            Binde alle DP-Eigenschaften unserer SeesawControl 
-            an die VM-Properties (Reference, Ball, Angle, Boing).
-        -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Wippe -->
         <local:SeesawControl 
-            Reference="{Binding Reference}"
-            Ball="{Binding Ball}"
-            Angle="{Binding Angle}"
-            Boing="{Binding Boing}"
-            Background="Black"
-            />
+        Grid.Row="0"
+        Reference="{Binding Reference}"
+        Ball="{Binding Ball}"
+        Angle="{Binding Angle}"
+        Boing="{Binding Boing}"
+        Width="600"
+        Height="200"/>
+
+        <!-- Analyse-Graph -->
+        <local:SeesawGraphControl 
+        Grid.Row="1"
+        Reference="{Binding Reference}"
+        Ball="{Binding Ball}"
+        Angle="{Binding Angle}"
+        Width="600"
+        Height="150"/>
     </Grid>
+
 </UserControl>
