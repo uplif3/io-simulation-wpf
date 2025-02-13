@@ -139,6 +139,26 @@ namespace io_simulation_wpf.ViewModels
             {
                 OnSpecialViewRequested(int.Parse(line.Substring(2)));
             }
+            else if (line.StartsWith("?01"))
+            {
+                _serialPortService.WriteLine(IOVM.Model.GetSwitchStateInHex());
+            }
+            else if (line.StartsWith("?02"))
+            {
+                _serialPortService.WriteLine(IOVM.Model.GetButtonStateInHex());
+            }
+            else if (line.StartsWith("?0a"))
+            {
+                _serialPortService.WriteLine(IOVM.Model.GetScale0InHex());
+            }
+            else if (line.StartsWith("?0b"))
+            {
+                _serialPortService.WriteLine(IOVM.Model.GetScale1InHex());
+            }
+            else if (line.StartsWith("?T"))
+            {
+                _serialPortService.WriteLine($"dT{DateTime.Now.ToString("yyyyMMddHHmmss")}");
+            }
             else
             {
                 DebugVM?.AddDebugMessage("Unknown line: " + line);
