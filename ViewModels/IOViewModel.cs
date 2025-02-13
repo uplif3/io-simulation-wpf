@@ -41,6 +41,16 @@ namespace io_simulation_wpf.ViewModels
                 System.Diagnostics.Debug.WriteLine($"d02{hexVal}");
                 port.WriteLine($"d02{hexVal}");
             }
+            else if (e.PropertyName.Equals("Scale0"))
+            {
+                string hexVal = Model.GetScale0InHex();
+                port.WriteLine($"d0a{hexVal}");
+            }
+            else if (e.PropertyName.Equals("Scale1"))
+            {
+                string hexVal = Model.GetScale1InHex();
+                port.WriteLine($"d0b{hexVal}");
+            }
         }
 
         public void ProcessLedPacket(string data) => Model.SetLedStateFromHex(data);

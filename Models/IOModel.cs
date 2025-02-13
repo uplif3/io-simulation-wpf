@@ -321,5 +321,17 @@ namespace io_simulation_wpf.Models
             return val.ToString("x2");
         }
 
+        public string GetScale0InHex()
+        {
+            var res = Scale0.ToString("x4");
+            System.Diagnostics.Debug.WriteLine(res);
+            return res;
+        }
+
+        public string GetScale1InHex()
+        {
+            return Scale1.ToString("x4");
+        }
+
     }
 }
