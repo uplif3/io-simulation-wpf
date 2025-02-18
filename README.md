@@ -18,8 +18,5 @@ Prototype of the io-simulation project using WPF.
 - '3' - Toggle the third button
 - '4' - Toggle the fourth button
 
-## Known issues
-- The Keybinds only work after 1 click on one of the buttons
-
 ## ToDo
 - Model for each SpecialView

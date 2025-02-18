@@ -12,42 +12,60 @@
         <KeyBinding Key="D2" Command="{Binding HandleKeyDown}" CommandParameter="D2"/>
         <KeyBinding Key="D3" Command="{Binding HandleKeyDown}" CommandParameter="D3"/>
         <KeyBinding Key="D4" Command="{Binding HandleKeyDown}" CommandParameter="D4"/>
-
-        <KeyBinding Key="D1" Command="{Binding HandleKeyUp}" CommandParameter="D1"/>
-        <KeyBinding Key="D2" Command="{Binding HandleKeyUp}" CommandParameter="D2"/>
-        <KeyBinding Key="D3" Command="{Binding HandleKeyUp}" CommandParameter="D3"/>
-        <KeyBinding Key="D4" Command="{Binding HandleKeyUp}" CommandParameter="D4"/>
     </UserControl.InputBindings>
 
     <StackPanel Margin="10">
         <TextBlock Text="LEDs:" FontWeight="Bold" />
         <WrapPanel>
-            <Ellipse Width="20" Height="20"
-             Fill="{Binding Model.Led7, Converter={StaticResource LedColorConverter}}"
-             Stroke="Black" StrokeThickness="1" Margin="5"/>
-            <Ellipse Width="20" Height="20"
-             Fill="{Binding Model.Led6, Converter={StaticResource LedColorConverter}}"
-             Stroke="Black" StrokeThickness="1" Margin="5"/>
-            <Ellipse Width="20" Height="20"
-             Fill="{Binding Model.Led5, Converter={StaticResource LedColorConverter}}"
-             Stroke="Black" StrokeThickness="1" Margin="5"/>
-            <Ellipse Width="20" Height="20"
-             Fill="{Binding Model.Led4, Converter={StaticResource LedColorConverter}}"
-             Stroke="Black" StrokeThickness="1" Margin="5"/>
-            <Ellipse Width="20" Height="20"
-             Fill="{Binding Model.Led3, Converter={StaticResource LedColorConverter}}"
-             Stroke="Black" StrokeThickness="1" Margin="5"/>
-            <Ellipse Width="20" Height="20"
-             Fill="{Binding Model.Led2, Converter={StaticResource LedColorConverter}}"
-             Stroke="Black" StrokeThickness="1" Margin="5"/>
-            <Ellipse Width="20" Height="20"
-             Fill="{Binding Model.Led1, Converter={StaticResource LedColorConverter}}"
-             Stroke="Black" StrokeThickness="1" Margin="5"/>
-            <Ellipse Width="20" Height="20"
-             Fill="{Binding Model.Led0, Converter={StaticResource LedColorConverter}}"
-             Stroke="Black" StrokeThickness="1" Margin="5"/>
+            <StackPanel Margin="5">
+                <TextBlock Text="LED7" HorizontalAlignment="Center"/>
+                <Ellipse Width="20" Height="20"
+                 Fill="{Binding Model.Led7, Converter={StaticResource LedColorConverter}}"
+                 Stroke="Black" StrokeThickness="1"/>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock Text="LED6" HorizontalAlignment="Center"/>
+                <Ellipse Width="20" Height="20"
+                 Fill="{Binding Model.Led6, Converter={StaticResource LedColorConverter}}"
+                 Stroke="Black" StrokeThickness="1"/>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock Text="LED5" HorizontalAlignment="Center"/>
+                <Ellipse Width="20" Height="20"
+                 Fill="{Binding Model.Led5, Converter={StaticResource LedColorConverter}}"
+                 Stroke="Black" StrokeThickness="1"/>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock Text="LED4" HorizontalAlignment="Center"/>
+                <Ellipse Width="20" Height="20"
+                 Fill="{Binding Model.Led4, Converter={StaticResource LedColorConverter}}"
+                 Stroke="Black" StrokeThickness="1"/>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock Text="LED3" HorizontalAlignment="Center"/>
+                <Ellipse Width="20" Height="20"
+                 Fill="{Binding Model.Led3, Converter={StaticResource LedColorConverter}}"
+                 Stroke="Black" StrokeThickness="1"/>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock Text="LED2" HorizontalAlignment="Center"/>
+                <Ellipse Width="20" Height="20"
+                 Fill="{Binding Model.Led2, Converter={StaticResource LedColorConverter}}"
+                 Stroke="Black" StrokeThickness="1"/>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock Text="LED1" HorizontalAlignment="Center"/>
+                <Ellipse Width="20" Height="20"
+                 Fill="{Binding Model.Led1, Converter={StaticResource LedColorConverter}}"
+                 Stroke="Black" StrokeThickness="1"/>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock Text="LED0" HorizontalAlignment="Center"/>
+                <Ellipse Width="20" Height="20"
+                 Fill="{Binding Model.Led0, Converter={StaticResource LedColorConverter}}"
+                 Stroke="Black" StrokeThickness="1"/>
+            </StackPanel>
         </WrapPanel>
-
 
         <TextBlock Text="Switches:" FontWeight="Bold" />
         <WrapPanel>
@@ -79,18 +97,14 @@
 
         <TextBlock Text="Buttons:" FontWeight="Bold" />
         <WrapPanel>
-            <CheckBox Content="Button3"
-                      IsChecked="{Binding Model.Button3}"
-                      Margin="5"/>
-            <CheckBox Content="Button2"
-                      IsChecked="{Binding Model.Button2}"
-                      Margin="5"/>
-            <CheckBox Content="Button1"
-                      IsChecked="{Binding Model.Button1}"
-                      Margin="5"/>
-            <CheckBox Content="Button0"
-                      IsChecked="{Binding Model.Button0}"
-                      Margin="5"/>
+            <ToggleButton Content="Button3" Margin="5"
+                          IsChecked="{Binding Model.Button3, Mode=TwoWay}"/>
+            <ToggleButton Content="Button2" Margin="5"
+                          IsChecked="{Binding Model.Button2, Mode=TwoWay}"/>
+            <ToggleButton Content="Button1" Margin="5"
+                          IsChecked="{Binding Model.Button1, Mode=TwoWay}"/>
+            <ToggleButton Content="Button0" Margin="5"
+                          IsChecked="{Binding Model.Button0, Mode=TwoWay}"/>
         </WrapPanel>
 
         <TextBlock Text="Scale0:" />

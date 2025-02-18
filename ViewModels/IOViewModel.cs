@@ -69,13 +69,14 @@ namespace io_simulation_wpf.ViewModels
 
         private void ProcessKeyDown(Key key)
         {
-            if (_pressedKeys.Contains(key)) return; // Verhindert wiederholte Eingaben
+            if (_pressedKeys.Contains(key))
+                return; // Verhindert wiederholte Eingaben, solange die Taste noch gedrückt ist
 
             int index = KeyToButtonIndex(key);
             if (index >= 0)
             {
                 _pressedKeys.Add(key);
-                ToggleButton(index);
+                SetButtonState(index, true); // Button "drücken" (an)
                 SendButtonStatus();
             }
         }
@@ -86,10 +87,11 @@ namespace io_simulation_wpf.ViewModels
             if (index >= 0)
             {
                 _pressedKeys.Remove(key);
-                ToggleButton(index);
+                SetButtonState(index, false); // Button loslassen (aus)
                 SendButtonStatus();
             }
         }
+
 
         private void ToggleButton(int index)
         {
@@ -131,6 +133,7 @@ namespace io_simulation_wpf.ViewModels
                 case 3: Model.Button3 = state; break;
             }
         }
+
 
     }
 }

@@ -51,7 +51,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="630"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -64,14 +64,13 @@
 
             <views:LogView DataContext="{Binding LogVM}" 
                            Grid.Row="0" Grid.Column="1" 
-                           MinHeight="180" MaxHeight="180" MinWidth="200" 
+                           MinHeight="180" MaxHeight="180" MinWidth="300" 
                            x:Name="LogPanel"/>
             <views:DebugView DataContext="{Binding DebugVM}" 
                              Grid.Row="1" Grid.Column="1" 
-                             MinHeight="180" MaxHeight="180" MinWidth="200" 
+                             MinHeight="180" MaxHeight="180" MinWidth="300" 
                              x:Name="DebugPanel"/>
 
-            <!-- ContentControl für den Special Screen (Alarmclock oder Seesaw) -->
             <ContentControl Content="{Binding ActiveSpecialView}" 
                             Grid.Row="0" Grid.Column="0" 
                             Visibility="{Binding ActiveSpecialView, Converter={StaticResource NullToVisibilityConverter}}"/>
